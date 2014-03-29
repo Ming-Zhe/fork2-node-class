@@ -10,7 +10,10 @@ var Class = function (param, parent){
 		for (var key in parent.prototype){
 			construct.prototype[key] = parent.prototype[key];
 		}
-		
+		construct.__super__ = parent;
+	}else{
+		construct.__super__ = Object;
+	}
 
 	// this.constructor.prototype.getA = function() {
 	// 	return this.a;
