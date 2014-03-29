@@ -1,6 +1,6 @@
 var Class = function (param, parent){
 
-	var construct
+	var construct;
 	if (typeof param['initialize'] === 'undefined')
 		construct = function(){};
 	else
@@ -14,45 +14,30 @@ var Class = function (param, parent){
 	}else{
 		construct.__super__ = Object;
 	}
-
-	// this.constructor.prototype.getA = function() {
-	// 	return this.a;
-	// };
-	// this.constructor.prototype.getB = function() {
-	// 	return this.b;
-	// };
-
 	for(var key in param){
 		if(key != 'initialize'){
 			construct.prototype[key] = param[key];
 		}
 	}
-	// var parentP = parent.prototype;
-	// var paramP = param.prototype;
-	// for(var i in parentP){
-	// 	paramP[i] = parentP[i];
+
+  	construct.prototype.super = function(){
+	    res = construct.__super__.prototype[arguments[0]].apply(this, [].slice.call(arguments, 1));
+	    return res;
+  	}
+
+	// construct.prototype.super = function(){
+	// 	if (!arguments){
+	// 		return construct.__super__.prototype['self'].apply(this,[].slice.call(arguments, 1));
+	// 	}
+	// 	if (arguments.length == 1){
+	// 		return construct.__super__.prototype[arguments[0]];
+	// 	}
 	// }
-	// console.log(construct);
+	
+	construct.prototype.constructor = construct;
 	return construct;
 }
 
-
-
-  var A = Class({
-    a: function() {
-      return 1;
-    }
-  });
-
-  var B = Class({
-    b: function() {
-      return 2;
-    }
-  },A);
-
-  var b = new B();
-
-  console.log(b.a);
 
 module.exports = Class;
 
