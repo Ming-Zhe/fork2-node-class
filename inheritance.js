@@ -20,8 +20,11 @@ var Class = function (param, parent){
 		}
 	}
 
+	var current_class = construct;
   	construct.prototype.super = function(){
-	    res = construct.__super__.prototype[arguments[0]].apply(this, [].slice.call(arguments, 1));
+  		current_class = current_class.__super__;
+	    res = current_class.prototype[arguments[0]].apply(this, [].slice.call(arguments, 1));
+	    current_class = construct;
 	    return res;
   	}
 
